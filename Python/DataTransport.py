@@ -28,12 +28,15 @@ def main():
     )
 
     files_moved = 0
+
     # List and move eligible CSV files from Downloads
     for file_name in os.listdir(downloads_folder):
         if file_name.lower().endswith('.csv') and (
-                file_name.startswith('Apple Card') or file_name.startswith('Discover')):
+                file_name.startswith('Apple Card') or file_name.startswith('Discover') or file_name.startswith('EXPORT')):
+
             source_path = os.path.join(downloads_folder, file_name)
             destination_path = os.path.join(destination_folder, file_name)
+
             try:
                 shutil.move(source_path, destination_path)
                 logging.info(f"Moved: {file_name}")
