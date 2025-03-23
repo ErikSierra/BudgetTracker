@@ -36,3 +36,8 @@ Connect your Azure SQL database to Power BI to visualize:
 - Spending trends
 - Category breakdowns
 - Source-specific summaries
+
+![image](https://github.com/user-attachments/assets/8914a389-5347-42b0-8a35-f6262d8a0590)
+![image](https://github.com/user-attachments/assets/48eacdc5-ee24-4f50-96fe-52b794baec62)
+
+
