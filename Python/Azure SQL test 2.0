@@ -1,0 +1,29 @@
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+
+
+# Replace with your actual Key Vault name
+key_vault_name = "Esierra"
+key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+
+# Create a credential using DefaultAzureCredential
+# This credential will automatically use your Azure login (if you're developing locally and have done `az login`)
+# or use a managed identity if running in Azure (with that identity assigned to the Key Vault).
+credential = DefaultAzureCredential()
+
+# Create a SecretClient to interact with your Key Vault
+client = SecretClient(vault_url=key_vault_uri, credential=credential)
+
+# Retrieve secrets by their names
+sql_server = client.get_secret("sql-server").value
+sql_database = client.get_secret("sql-database").value
+sql_username = client.get_secret("sql-username").value
+sql_password = client.get_secret("sql-password").value
+
+# (Optional) If you also stored the driver in Key Vault, retrieve it:
+# sql_driver = client.get_secret("sql-driver").value
+
+print("Server:", sql_server)
+print("Database:", sql_database)
+print("Username:", sql_username)
+print("Password:", sql_password)
