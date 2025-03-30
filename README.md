@@ -1,5 +1,13 @@
 # 💰 BudgetTracker
 
+![Last Commit](https://img.shields.io/github/last-commit/ErikSierra/BudgetTracker)
+![Commits](https://img.shields.io/github/commit-activity/m/ErikSierra/BudgetTracker)
+![Language](https://img.shields.io/github/languages/top/ErikSierra/BudgetTracker)
+![Repo Size](https://img.shields.io/github/repo-size/ErikSierra/BudgetTracker)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+
+
+
 **BudgetTracker** is a Python automation tool that ingests and processes credit card transactions from CSV files, standardizes the data, and uploads it into an Azure SQL database for easy tracking and analysis.
 
 [Watch CS499 Milestone 1 on Vimeo](https://vimeo.com/1070840061/8f08a00d80)
