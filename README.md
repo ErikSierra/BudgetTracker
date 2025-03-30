@@ -2,6 +2,8 @@
 
 **BudgetTracker** is a Python automation tool that ingests and processes credit card transactions from CSV files, standardizes the data, and uploads it into an Azure SQL database for easy tracking and analysis.
 
+[Watch CS499 Milestone 1 on Vimeo](https://vimeo.com/1070840061/8f08a00d80)
+
 ---
 
 ## 🚀 Features
