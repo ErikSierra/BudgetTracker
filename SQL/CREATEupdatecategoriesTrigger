@@ -1,0 +1,8 @@
+CREATE TRIGGER trg_UpdateCategories_AfterInsert
+ON dbo.BudgetTracker
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    EXEC dbo.UpdateCategories;
+END;
