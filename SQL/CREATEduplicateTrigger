@@ -1,0 +1,66 @@
+CREATE TRIGGER trg_PreventDuplicates
+ON dbo.BudgetTracker
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Step 1: Deduplicate incoming batch
+    WITH DedupedIncoming AS (
+        SELECT 
+            TransactionDate,
+            ClearingDate,
+            Description,
+            Category,
+            Amount,
+            Source,
+            ROW_NUMBER() OVER (
+                PARTITION BY 
+                    TransactionDate, 
+                    ClearingDate, 
+                    Description, 
+                    Category, 
+                    Amount, 
+                    Source 
+                ORDER BY (SELECT NULL)
+            ) AS rn
+        FROM INSERTED
+    )
+    SELECT * INTO #UniqueIncoming
+    FROM DedupedIncoming
+    WHERE rn = 1;
+
+    -- Step 2: Insert non-duplicates
+    INSERT INTO dbo.BudgetTracker (TransactionDate, ClearingDate, Description, Category, Amount, Source)
+    SELECT u.TransactionDate, u.ClearingDate, u.Description, u.Category, u.Amount, u.Source
+    FROM #UniqueIncoming u
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM dbo.BudgetTracker bt
+        WHERE 
+            bt.TransactionDate = u.TransactionDate AND
+            ISNULL(bt.ClearingDate, '') = ISNULL(u.ClearingDate, '') AND
+            bt.Description = u.Description AND
+            bt.Category = u.Category AND
+            bt.Amount = u.Amount AND
+            ISNULL(bt.Source, '') = ISNULL(u.Source, '')
+    );
+
+    -- Step 3: Insert duplicates into log table
+    INSERT INTO dbo.DuplicateTransactions (TransactionDate, ClearingDate, Description, Category, Amount, Source)
+    SELECT u.TransactionDate, u.ClearingDate, u.Description, u.Category, u.Amount, u.Source
+    FROM #UniqueIncoming u
+    WHERE EXISTS (
+        SELECT 1
+        FROM dbo.BudgetTracker bt
+        WHERE 
+            bt.TransactionDate = u.TransactionDate AND
+            ISNULL(bt.ClearingDate, '') = ISNULL(u.ClearingDate, '') AND
+            bt.Description = u.Description AND
+            bt.Category = u.Category AND
+            bt.Amount = u.Amount AND
+            ISNULL(bt.Source, '') = ISNULL(u.Source, '')
+    );
+
+    DROP TABLE #UniqueIncoming;
+END;
