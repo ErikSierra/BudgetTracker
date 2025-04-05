@@ -1,0 +1,9 @@
+CREATE NONCLUSTERED INDEX IX_BudgetTracker_DuplicateCheck
+ON dbo.BudgetTracker (
+    TransactionDate,
+    ClearingDate,
+    Description,
+    Category,
+    Amount,
+    Source
+);
