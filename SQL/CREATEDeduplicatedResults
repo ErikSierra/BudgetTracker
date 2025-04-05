@@ -1,0 +1,9 @@
+CREATE VIEW vw_BudgetTracker_NoDuplicates AS
+SELECT DISTINCT
+    TransactionDate,
+    ClearingDate,
+    Description,
+    Category,
+    Amount,
+    Source
+FROM dbo.BudgetTracker;
